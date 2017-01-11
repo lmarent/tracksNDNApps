@@ -55,11 +55,7 @@ private:
 
     // create data packet with the same name as interest
     std::shared_ptr<ndn::Data> data = std::make_shared<ndn::Data>(interest.getName());
-
-    // prepare and assign content of the data packet
-    //std::ostringstream os;
-    //os << "C++ LINE #" << (m_counter++) << std::endl;
-    //std::string content = os.str();
+    
     
     // Get working directory and mobility file path 
     std::string cwd = getcwd(NULL, 0);
@@ -80,21 +76,36 @@ private:
 	infile >> latValue >> lonValue;
 	std::time_t result = std::time(nullptr); // for epoch time
 
+    /*
     std::cout << "Content payload: " << std::endl;
     std::cout << "    Node #: " << getNode << std::endl;
     std::cout << "    latitude: " << latValue << std::endl;
     std::cout << "    longitude: " << lonValue << std::endl;     
     std::cout << "    altitude: 00.00" << std::endl;
     std::cout << "    Timestamp: " << std::asctime(std::localtime(&result)) << std::endl;
+    */
     
-    
-    // print content    
+    /*
     static const std::string content = "Node #: " + getNode.string() +
 				", latitude: " + std::to_string(latValue) +  
 				", longitude: " + std::to_string(lonValue) +
 				", altitude: 00.00" +
-				", Timestamp: " + std::asctime(std::localtime(&result));
-    //std::cout << content << std::endl;    
+				", Timestamp: " + std::asctime(std::localtime(&result)) +
+				os.str();
+	*/
+	// prepare and assign content of the data packet
+	std::ostringstream os;
+    os << "Content payload: " << std::endl
+       << "    SequenceNo: " << (m_counter++) << std::endl
+       << "    Node #: " << getNode << std::endl
+       << "    latitude: " << latValue << std::endl
+       << "    longitude: " << lonValue << std::endl
+       << "    altitude: 00.00" << std::endl
+	   << "    Timestamp: " << std::asctime(std::localtime(&result)) <<std::endl;
+    std::string content = os.str();
+	
+	// print content 
+    std::cout << content << std::endl;    
     
     data->setContent(reinterpret_cast<const uint8_t*>(content.c_str()), content.size());
 

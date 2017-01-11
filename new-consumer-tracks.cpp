@@ -51,7 +51,8 @@ private:
   void
   onData(const ndn::Data& data)
   {
-    std::cerr << "<< Data:  "
+    std::cerr << "<< Payload:  "
+			  << std::endl
               << std::string(reinterpret_cast<const char*>(data.getContent().value()),
                                                            data.getContent().value_size())
               << std::endl;
