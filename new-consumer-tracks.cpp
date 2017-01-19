@@ -28,7 +28,7 @@ public:
   explicit
   Client(ndn::Face& face)
     : m_face(face)
-    , m_baseName(ndn::Name("/example/tracks"))
+    , m_baseName(ndn::Name("/tracks"))
     , m_currentSeqNo(0)
   {
     std::cerr << "Base name: " << m_baseName << std::endl;
@@ -68,7 +68,7 @@ private:
   onTimeout(const ndn::Interest& interest)
   {
     // re-express interest
-    std::cerr << "<< C++ timeout for " << interest << std::endl;
+    std::cerr << "<< timeout for " << interest << std::endl;
     m_face.expressInterest(interest.getName(),
                            std::bind(&Client::onData, this, _2),
                            std::bind(&Client::onTimeout, this, _1));
