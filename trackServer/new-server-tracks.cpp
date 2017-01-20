@@ -22,13 +22,8 @@
 
 #include <iostream>
 #include <string>
-#include <tuple> 
 
-// For string parsing
-#include <ctime>
-#include <unistd.h>
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
+#include "Node.h"
 
 class Server
 {
@@ -69,6 +64,8 @@ private:
     // set metainfo parameters
     data->setFreshnessPeriod(ndn::time::seconds(1));
 
+	std::cout << content << std::endl;
+
     // sign data packet
     m_keyChain.sign(*data);
 
@@ -80,50 +77,29 @@ private:
   std::string
   getNodePosition()
   {
-	  // get working directory
-	  std::string cwd = getcwd(NULL, 0);
-      std::cout << "Current working dir: " << cwd << std::endl;
-      boost::filesystem::path p(cwd);
-      boost::filesystem::path getNode(p.stem());
-      std::cout << "Node is: " << getNode << std::endl;
-    
-      boost::filesystem::path dir(p.parent_path( ));
-      boost::filesystem::path ext(getNode.string() + ".xy");
-      boost::filesystem::path target (dir / ext);
-    
-      std::cout << "Target file is: " << target << std::endl;
-	 
-	  // get node coordinates
-	  boost::filesystem::ifstream infile(target);
-      float latValue, lonValue;
-	  infile >> latValue >> lonValue;
+	   long latitude;
+	   long longitude;
+	   std::string content;
+	   
+	   Node node;
+	   latitude = node.getLatitude();
+	   longitude = node.getLongitude();	
+	   
+	   content = std::string("Longitude: ") + std::to_string(latitude) + '\n';
+	   content = content + std::string("Longitude: ") + std::to_string(longitude);
+	   
+	   previous = node;
+	   
+	   return content;
 	  
-	  // get system time
-	  std::time_t result = std::time(nullptr); // for epoch time
-	  
-	  // prepare and assign content of the data packet
-	  std::ostringstream os;
-      os << "Content payload: " << std::endl
-         << "    SequenceNo: " << (m_counter++) << std::endl
-         << "    Node #: " << getNode << std::endl
-         << "    latitude: " << latValue << std::endl
-         << "    longitude: " << lonValue << std::endl
-         << "    altitude: 00.00" << std::endl
-	     << "    Timestamp: " << std::asctime(std::localtime(&result)) <<std::endl;
-	     
-      std::string content = os.str();	
-	  // print content 
-      std::cout << content << std::endl;  
-	  
-	  return content;
   }
-  
+
 private:
   void
   calculateNextPosition()
   {
 	  
-	  // append current position in array
+	  
 	  
 	  
 	  // calculate speed ((current_position - last_position) / time difference)
@@ -139,6 +115,7 @@ private:
   ndn::KeyChain m_keyChain;
   ndn::Name m_baseName;
   uint64_t m_counter;
+  Node previous;
 };
 
 int
