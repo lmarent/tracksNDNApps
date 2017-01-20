@@ -25,4 +25,6 @@ class Node
     //get timestamp 
     std::time_t getTimestamp();
 
+    std::string getContent();
+  
 };
