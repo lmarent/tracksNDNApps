@@ -1,3 +1,3 @@
 # NDN Consumer/Producer Application
 
-Simple consumer/producer application that uses nodes' location and time information in the payload.
+Consumer/Producer applicaiton that uses node's coordinates to estimate next position.
